@@ -10,16 +10,14 @@ class ContentEntityNormalizer extends EntityNormalizer {
   /**
    * {@inheritdoc}
    */
-  public function normalize($object, $format = NULL, array $context = []) {
-    $attributes = parent::normalize($object, $format, $context);
-
-    return $attributes;
-  }
+  protected $supportedInterfaceOrClass = [ContentEntityInterface::class];
 
   /**
    * {@inheritdoc}
    */
-  public function supportsNormalization($data, $format = NULL) {
-    return $format === 'value' && $data instanceof ContentEntityInterface;
+  public function normalize($object, $format = NULL, array $context = []) {
+    $attributes = parent::normalize($object, $format, $context);
+
+    return $attributes;
   }
 }

@@ -2,13 +2,15 @@
 
 namespace Drupal\value\Normalizer;
 
+use Drupal\Core\Field\FieldConfigBase;
 use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\Core\Field\FieldStorageDefinitionInterface;
-use Drupal\field\FieldConfigInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 
-class FieldItemListNormalizer extends SerializerAwareNormalizer implements NormalizerInterface {
+class FieldItemListNormalizer extends NormalizerBase {
+
+  /**
+   * {@inheritdoc}
+   */
+  protected $supportedInterfaceOrClass = [FieldItemListInterface::class];
 
   /**
    * {@inheritdoc}
@@ -24,20 +26,13 @@ class FieldItemListNormalizer extends SerializerAwareNormalizer implements Norma
   }
 
   /**
-   * {@inheritdoc}
-   */
-  public function supportsNormalization($data, $format = NULL) {
-    return $format === 'value' && $data instanceof FieldItemListInterface;
-  }
-
-  /**
    * Returns the cardinality for the field definition.
    */
   protected function getCardinality($object) {
     if ($definition = $object->getFieldDefinition()) {
 
       // Handle FieldConfig.
-      if ($definition instanceof FieldConfigInterface) {
+      if ($definition instanceof FieldConfigBase) {
         $definition = $definition->getFieldStorageDefinition();
       }
 

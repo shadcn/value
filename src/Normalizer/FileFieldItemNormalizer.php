@@ -10,6 +10,11 @@ class FileFieldItemNormalizer extends FieldItemNormalizer {
   /**
    * {@inheritdoc}
    */
+  protected $supportedInterfaceOrClass = [FileItem::class];
+
+  /**
+   * {@inheritdoc}
+   */
   public function normalize($object, $format = NULL, array $context = []) {
     $attributes = parent::normalize($object, $format, $context);
 
@@ -20,9 +25,5 @@ class FileFieldItemNormalizer extends FieldItemNormalizer {
     }
 
     return $attributes;
-  }
-
-  public function supportsNormalization($data, $format = NULL) {
-    return $format === 'value' && $data instanceof FileItem;
   }
 }

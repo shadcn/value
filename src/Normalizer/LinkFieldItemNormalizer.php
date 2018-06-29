@@ -10,6 +10,11 @@ class LinkFieldItemNormalizer extends FieldItemNormalizer {
   /**
    * {@inheritdoc}
    */
+  protected $supportedInterfaceOrClass = [LinkItemInterface::class];
+
+  /**
+   * {@inheritdoc}
+   */
   public function normalize($object, $format = NULL, array $context = []) {
     $attributes = parent::normalize($object, $format, $context);
 
@@ -19,9 +24,5 @@ class LinkFieldItemNormalizer extends FieldItemNormalizer {
     }
 
     return $attributes;
-  }
-
-  public function supportsNormalization($data, $format = NULL) {
-    return $format === 'value' && $data instanceof LinkItemInterface;
   }
 }

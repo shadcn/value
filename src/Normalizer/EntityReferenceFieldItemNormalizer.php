@@ -3,10 +3,13 @@
 namespace Drupal\value\Normalizer;
 
 use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 
-class EntityReferenceFieldItemNormalizer extends SerializerAwareNormalizer implements NormalizerInterface {
+class EntityReferenceFieldItemNormalizer extends NormalizerBase {
+
+  /**
+   * {@inheritdoc}
+   */
+  protected $supportedInterfaceOrClass = [EntityReferenceItem::class];
 
   /**
    * {@inheritdoc}
@@ -16,12 +19,4 @@ class EntityReferenceFieldItemNormalizer extends SerializerAwareNormalizer imple
     $attributes = $this->serializer->normalize($entity, $format, $context);
     return $attributes;
   }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function supportsNormalization($data, $format = NULL) {
-    return $format == 'value' && $data instanceof EntityReferenceItem;
-  }
-
 }
