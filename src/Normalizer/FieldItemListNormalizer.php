@@ -3,6 +3,8 @@
 namespace Drupal\value\Normalizer;
 
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\field\FieldConfigInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 
@@ -18,7 +20,7 @@ class FieldItemListNormalizer extends SerializerAwareNormalizer implements Norma
     }
 
     // Return array for multi value only.
-    return count($attributes) == 1 ? reset($attributes) : $attributes;
+    return $this->getCardinality($object) == 1 ? reset($attributes) : $attributes;
   }
 
   /**
@@ -26,6 +28,23 @@ class FieldItemListNormalizer extends SerializerAwareNormalizer implements Norma
    */
   public function supportsNormalization($data, $format = NULL) {
     return $format === 'value' && $data instanceof FieldItemListInterface;
+  }
+
+  /**
+   * Returns the cardinality for the field definition.
+   */
+  protected function getCardinality($object) {
+    if ($definition = $object->getFieldDefinition()) {
+
+      // Handle FieldConfig.
+      if ($definition instanceof FieldConfigInterface) {
+        $definition = $definition->getFieldStorageDefinition();
+      }
+
+      return $definition->getCardinality();
+    }
+
+    return 0;
   }
 
 }
