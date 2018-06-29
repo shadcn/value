@@ -1,0 +1,11 @@
+<?php
+
+/**
+ * Implements hook_preprocess().
+ */
+function value_preprocess(&$variables) {
+  // Move #_value out of elements for the template.
+  if (isset($variables['elements']['#_value'])) {
+    $variables += $variables['elements']['#_value'];
+  }
+}

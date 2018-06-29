@@ -1,0 +1,4 @@
+name: Value
+type: module
+description: Simplifies entity values for Twig Templates.
+core: 8.x
