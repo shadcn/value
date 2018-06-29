@@ -27,11 +27,50 @@ class ThemeManager extends \Drupal\Core\Theme\ThemeManager {
    */
   protected function buildValues($hook, $variables) {
     // We want ContentEntity only for now.
-    if ((is_string($hook)) && (isset($variables["#$hook"])) && ($entity = $variables["#$hook"]) && ($entity instanceof ContentEntityInterface)) {
+    if ($entity = $this->getEntity($hook, $variables)) {
       $variables['#_value']["_{$entity->bundle()}"] = \Drupal::service('serializer')
         ->normalize($entity, 'value');
     }
 
     return $variables;
+  }
+
+  /**
+   * Finds the entity in context from the variables array.
+   *
+   * @param $hook
+   * @param $variables
+   *
+   * @return \Drupal\Core\Entity\ContentEntityInterface|null
+   */
+  protected function getEntity($hook, $variables) {
+    if (is_string($hook)) {
+      $entity = NULL;
+
+      // Find the entity based on the hook.
+      // TODO: Refactor this into plugins?
+      switch ($hook) {
+        case 'block':
+          if (isset($variables['content']["#block_content"])) {
+            $entity = $variables['content']["#block_content"];
+          }
+          break;
+        default:
+          if (isset($variables["#$hook"])) {
+            $entity = $variables["#$hook"];
+          }
+          break;
+      }
+
+      // Comment.
+      if (strpos($hook, 'comment') === 0) {
+        $entity = $variables["#comment"];
+      }
+
+      // We want ContentEntity only for now.
+      return ($entity instanceof ContentEntityInterface) ? $entity : NULL;
+    }
+
+    return NULL;
   }
 }
