@@ -20,3 +20,7 @@ services:
       class: Drupal\value\Normalizer\FileFieldItemNormalizer
       tags:
         - { name: normalizer, priority: 12 }
+  serializer.value.link_item:
+      class: Drupal\value\Normalizer\LinkFieldItemNormalizer
+      tags:
+        - { name: normalizer, priority: 12 }
