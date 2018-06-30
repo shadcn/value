@@ -43,6 +43,10 @@ class TwigExtension extends \Twig_Extension {
       new \Twig_SimpleFilter('words', [$this, 'words']),
     ];
 
+    // Array filters.
+    $filters[] = new \Twig_SimpleFilter('pick', [$this, 'arrayPick']);
+    $filters[] = new \Twig_SimpleFilter('rename_keys', [$this, 'arrayRenameKeys']);
+
     // |image_style
     if ($this->moduleHandler->moduleExists('image')) {
       $filters[] = new \Twig_SimpleFilter('image_style', [$this, 'imageStyle']);
@@ -61,6 +65,11 @@ class TwigExtension extends \Twig_Extension {
    *   A renderable array.
    */
   public function markup($text) {
+    // If an array is passed, use its value.
+    if (is_array($text) && isset($text['value'])) {
+      $text = $text['value'];
+    }
+
     return [
       '#markup' => $text,
     ];
@@ -124,5 +133,40 @@ class TwigExtension extends \Twig_Extension {
     }
 
     return NULL;
+  }
+
+  /**
+   * Get a subset from an array based on a keys array.
+   *
+   * @param $array
+   * @param array|string $keys
+   *
+   * @return array
+   */
+  public function arrayPick($array, $keys) {
+    if (! is_array($keys)) $keys = [$keys];
+
+    return array_intersect_key($array, array_flip((array) $keys));
+  }
+
+  /**
+   * Renames the keys in an array.
+   *
+   * @param $array
+   * @param $keys
+   *
+   * @return array
+   */
+  public function arrayRenameKeys($array, $keys) {
+    if (is_array($array) && is_array($keys)) {
+      $renamed = array();
+      foreach ($array as $key => $value) {
+        $key = array_key_exists($key, $keys) ? $keys[$key] : $key;
+        $renamed[$key] = is_array($value) ? $this->arrayRenameKeys($value, $keys) : $value;
+      }
+      return $renamed;
+    }
+
+    return $array;
   }
 }
