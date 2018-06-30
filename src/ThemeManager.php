@@ -3,11 +3,17 @@
 namespace Drupal\value;
 
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Theme\ThemeManager as CoreThemeManager;
 
 /**
  * Extends the core ThemeManager.
  */
-class ThemeManager extends \Drupal\Core\Theme\ThemeManager {
+class ThemeManager extends CoreThemeManager {
+
+  /**
+   * The variable prefix for Twig templates.
+   */
+  public static $PREFIX = '_';
 
   /**
    * {@inheritdoc}
@@ -28,7 +34,7 @@ class ThemeManager extends \Drupal\Core\Theme\ThemeManager {
   protected function buildValues($hook, $variables) {
     // We want ContentEntity only for now.
     if ($entity = $this->getEntity($hook, $variables)) {
-      $variables['#_value']["_{$entity->bundle()}"] = \Drupal::service('serializer')
+      $variables['#_value'][static::$PREFIX . $entity->bundle()] = \Drupal::service('serializer')
         ->normalize($entity, 'value');
     }
 
