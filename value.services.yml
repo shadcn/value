@@ -1,4 +1,5 @@
 services:
+  # Normalizers.
   serializer.value.content_entity:
     class: Drupal\value\Normalizer\ContentEntityNormalizer
     tags:
@@ -24,3 +25,10 @@ services:
       class: Drupal\value\Normalizer\LinkFieldItemNormalizer
       tags:
         - { name: normalizer, priority: 12 }
+
+  # Twig filters.
+  value.twig_extension:
+    class: Drupal\value\Twig\TwigExtension
+    arguments: ['@entity_type.manager', '@module_handler']
+    tags:
+      - { name: twig.extension }
