@@ -16,7 +16,13 @@ class ContentEntityNormalizer extends EntityNormalizer {
    * {@inheritdoc}
    */
   public function normalize($object, $format = NULL, array $context = []) {
+    /** @var ContentEntityInterface $object */
     $attributes = parent::normalize($object, $format, $context);
+
+    // Add the canonical url.
+    if ($object->hasLinkTemplate('canonical')) {
+      $attributes['url'] = $object->toUrl()->toString();
+    }
 
     return $attributes;
   }
