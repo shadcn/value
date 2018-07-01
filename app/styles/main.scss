@@ -13,39 +13,19 @@ h3 {
   font-family: 'Anton', sans-serif;
 }
 
-code.lead {
-  font-size: .6rem;
-
-  @media (min-width: 768px)  {
-    font-size: 1.2rem;
-  }
-}
-
 code {
   font-size: .6rem;
 
   @media (min-width: 768px)  {
     font-size: 2rem;
   }
-}
 
-.card {
-  border-radius: 0;
-  border: 0;
+  &.lead {
+    font-size: .6rem;
 
-  strong {
-    text-decoration: underline;
-  }
-
-  &-footer {
-    border: 0;
-  }
-
-  pre {
-    margin: 0;
-    border-radius: 0;
-    padding-top: 0;
-    padding-bottom: 0;
+    @media (min-width: 768px) {
+      font-size: 1.2rem;
+    }
   }
 }
 
@@ -114,8 +94,50 @@ span.punctuation + span.property {
   }
 }
 
-.card-header,
-.card-footer {
+.card {
+  border-radius: 0;
+  border: 0;
+
+  strong {
+    text-decoration: underline;
+  }
+
+  pre {
+    margin: 0;
+    border-radius: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .card-header,
+  .card-footer {
+    border: 0;
+
+    code {
+      font-size: 1rem;
+    }
+  }
+}
+
+#examples,
+#filters {
+  code {
+    font-size: 1rem;
+  }
+
+  .card-body {
+
+    code {
+      font-size: 1rem;
+
+      @media (min-width: 768px) {
+        font-size: 1.25rem;
+      }
+    }
+  }
+}
+
+.lead {
 
   code {
     font-size: 1rem;
