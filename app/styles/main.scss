@@ -1,0 +1,123 @@
+@import "variables";
+@import "helper";
+
+@import url('https://fonts.googleapis.com/css?family=Anton|Nunito+Sans:300+400');
+
+body {
+  font-family: 'Nunito Sans', sans-serif;
+}
+
+h1,
+h2,
+h3 {
+  font-family: 'Anton', sans-serif;
+}
+
+code.lead {
+  font-size: .6rem;
+
+  @media (min-width: 768px)  {
+    font-size: 1.2rem;
+  }
+}
+
+code {
+  font-size: .6rem;
+
+  @media (min-width: 768px)  {
+    font-size: 2rem;
+  }
+}
+
+.card {
+  border-radius: 0;
+  border: 0;
+
+  strong {
+    text-decoration: underline;
+  }
+
+  &-footer {
+    border: 0;
+  }
+
+  pre {
+    margin: 0;
+    border-radius: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+span.punctuation + span.property {
+  color: map-get($colors, 'casandra-yellow');
+}
+
+.slice {
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 10vh 0 20vh;
+
+  &--button {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 0;
+    font-size: 3rem;
+    text-align: center;
+    line-height: 100px;
+    text-decoration: none;
+    display: none;
+
+    @media (min-width: 768px)  {
+      height: 100px;
+      line-height: 100px;
+      display: block;
+    }
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  &--next {
+    margin: 0 auto 0 -40px;
+    display: block;
+    border-radius: 50%;
+    font-size: 4rem;
+    width: 80px;
+    height: 80px;
+    line-height: 90px;
+    text-align: center;
+    background-color: map-get($colors, casandra-yellow);
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+  }
+}
+
+#root {
+
+  h1 {
+
+    code {
+      font-size: 1.8rem;
+
+      @media (min-width: 768px)  {
+        font-size: 4rem;
+      }
+    }
+  }
+}
+
+.card-header,
+.card-footer {
+
+  code {
+    font-size: 1rem;
+  }
+}

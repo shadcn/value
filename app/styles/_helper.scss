@@ -1,0 +1,45 @@
+// Text color
+// -----------------------------------------------------------------------------
+@each $name, $color in $colors {
+  .c--#{$name} {
+    color: $color !important;
+
+    > h1, h2, h3, h4, h5, h6, p  {
+      color: $color !important;
+    }
+  }
+}
+
+// Background color
+// -----------------------------------------------------------------------------
+@each $name, $color in $colors {
+  .bg--#{$name} {
+    background-color: $color !important;
+  }
+}
+
+// Font sizes
+// -----------------------------------------------------------------------------
+
+.display-1 {
+  font-size: 2rem;
+
+  @media (min-width: 768px)  {
+    font-size: 5rem;
+  }
+}
+
+.display-5 {
+  font-size: 1.4rem;
+  line-height: 1.4;
+
+  @media (min-width: 768px)  {
+    font-size: 2.7rem;
+    line-height: 1.8;
+  }
+}
+
+.display-6 {
+  font-size: 2rem;
+  line-height: 1.1;
+}
