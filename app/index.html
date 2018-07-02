@@ -65,8 +65,37 @@
         <div class="container">
           <div class="text-center">
             <p class="display-5"></br.><code class="language-twig">{{ _article.field_image.url }}</code><br /> instead of <br /><code class="language-twig">{{ file_url(node.field_image.entity.fileuri) }}</code></p>
-            <p class="lead">Where <code class="language-twig">_article</code> is the name of the bundle</p>
           </div>
+
+          <pre class="language-php">
+            <code class="language-php">
+$variables['_article'] = [
+  'nid' => 1,
+  'title' => 'Minus veritatis rem tenetur hic repellendus fugit.',
+  'created' => 1538956800,
+  'field_foo' => 'bar',
+  'field_author' => [
+    'uid' => 1,
+    'name' => 'john',
+    'field_company' => 'ACME Inc',
+    'field_picture' => [
+      'uri' => 'public://profiles/john.jpg',
+      'url' => 'https://example.com/sites/default/files/profiles/john.jpg',
+      'alt' => 'Tempora magni blanditiis maxime inventore.',
+    ],
+  ],
+  'field_categories' => [
+    [
+      'tid' => 1,
+      'name' => 'Lipsum',
+      'description' => 'Quod id aspernatur laboriosam fugiat totam.'
+    ],
+  ],
+];
+          </code>
+          </pre>
+
+          <p class="lead text-center mt-4">Where <code class="language-twig">_article</code> is the name of the bundle</p>
 
           <a href="#examples" class="slice--next bg--nasu-purple c--white"><i class="fa fa-angle-down"></i></a>
         </div>
@@ -324,7 +353,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/plugins/unescaped-markup/prism-unescaped-markup.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/components/prism-markup.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/components/prism-markup-templating.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/components/prism-clike.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/components/prism-twig.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/components/prism-php.min.js"></script>
 
     <!-- build:js scripts/main.js -->
     <script src="scripts/main.js"></script>
