@@ -64,7 +64,7 @@
       <section class="slice bg--pastel-red" id="how">
         <div class="container">
           <div class="text-center">
-            <p class="display-5"></br.><code class="language-twig">{{ _article.field_image.url }}</code><br /> instead of <br /><code class="language-twig">{{ file_url(node.field_image.entity.fileuri) }}</code></p>
+            <p class="display-5"></br.><code class="language-twig">{{ _article.field_image.url }}</code><br /> instead of <br /><code class="language-twig">{{ file_url(node.field_image.entity.uri.value) }}</code></p>
           </div>
 
           <pre class="language-php">
