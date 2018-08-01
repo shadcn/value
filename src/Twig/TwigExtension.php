@@ -45,7 +45,10 @@ class TwigExtension extends \Twig_Extension {
 
     // Array filters.
     $filters[] = new \Twig_SimpleFilter('pick', [$this, 'arrayPick']);
-    $filters[] = new \Twig_SimpleFilter('rename_keys', [$this, 'arrayRenameKeys']);
+    $filters[] = new \Twig_SimpleFilter('rename_keys', [
+      $this,
+      'arrayRenameKeys',
+    ]);
 
     // |image_style
     if ($this->moduleHandler->moduleExists('image')) {
@@ -61,17 +64,30 @@ class TwigExtension extends \Twig_Extension {
    * @param string $text
    *   The escaped text to render.
    *
+   * @param null $format
+   *   The text format to use for processing.
+   *
    * @return array
    *   A renderable array.
    */
-  public function markup($text) {
+  public function markup($text, $format = NULL) {
+    $value = $text;
+
     // If an array is passed, use its value.
     if (is_array($text) && isset($text['value'])) {
-      $text = $text['value'];
+      $value = $text['value'];
+    }
+
+    if ($format) {
+      return [
+        '#type' => 'processed_text',
+        '#text' => $value,
+        '#format' => $format,
+      ];
     }
 
     return [
-      '#markup' => $text,
+      '#markup' => $value,
     ];
   }
 
