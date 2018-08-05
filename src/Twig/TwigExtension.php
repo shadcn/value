@@ -49,6 +49,7 @@ class TwigExtension extends \Twig_Extension {
       $this,
       'arrayRenameKeys',
     ]);
+    $filters[] = new \Twig_SimpleFilter('where', [$this, 'arrayWhere']);
 
     // |image_style
     if ($this->moduleHandler->moduleExists('image')) {
@@ -184,5 +185,40 @@ class TwigExtension extends \Twig_Extension {
     }
 
     return $array;
+  }
+
+  /**
+   * Filters an array.
+   *
+   * @param $array
+   * @param $value
+   * @param string $operator
+   *
+   * @return array
+   */
+  public function arrayWhere($array, $value, $operator = '=') {
+    return array_filter($array, function ($_value) use ($value, $operator) {
+      switch ($operator) {
+        case '=':
+          return $_value == $value;
+        case '!=':
+          return $_value != $value;
+        case '<':
+          return $_value < $value;
+        case '>':
+          return $_value > $value;
+        case '<=':
+          return $_value <= $value;
+        case '>=':
+          return $_value >= $value;
+        case '===':
+          return $_value === $value;
+        case '!==':
+          return $_value !== $value;
+        default:
+      }
+
+      return FALSE;
+    });
   }
 }
