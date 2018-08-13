@@ -106,7 +106,7 @@ class TwigExtension extends \Twig_Extension {
       return $string;
     }
 
-    return rtrim(mb_strimwidth($string, 0, $length, '', 'UTF-8')).$suffix;
+    return rtrim(mb_strimwidth($string, 0, $length, '', 'UTF-8')) . $suffix;
   }
 
   /**
@@ -118,15 +118,14 @@ class TwigExtension extends \Twig_Extension {
    *
    * @return string
    */
-  public function words($string, $length = 100, $suffix = '...')
-  {
-    preg_match('/^\s*+(?:\S++\s*+){1,'.$length.'}/u', $string, $matches);
+  public function words($string, $length = 100, $suffix = '...') {
+    preg_match('/^\s*+(?:\S++\s*+){1,' . $length . '}/u', $string, $matches);
 
-    if (! isset($matches[0]) || mb_strlen($string) === mb_strlen($matches[0])) {
+    if (!isset($matches[0]) || mb_strlen($string) === mb_strlen($matches[0])) {
       return $string;
     }
 
-    return rtrim($matches[0]).$suffix;
+    return rtrim($matches[0]) . $suffix;
   }
 
   /**
@@ -161,7 +160,9 @@ class TwigExtension extends \Twig_Extension {
    * @return array
    */
   public function arrayPick($array, $keys) {
-    if (! is_array($keys)) $keys = [$keys];
+    if (!is_array($keys)) {
+      $keys = [$keys];
+    }
 
     return array_intersect_key($array, array_flip((array) $keys));
   }
@@ -176,7 +177,7 @@ class TwigExtension extends \Twig_Extension {
    */
   public function arrayRenameKeys($array, $keys) {
     if (is_array($array) && is_array($keys)) {
-      $renamed = array();
+      $renamed = [];
       foreach ($array as $key => $value) {
         $key = array_key_exists($key, $keys) ? $keys[$key] : $key;
         $renamed[$key] = is_array($value) ? $this->arrayRenameKeys($value, $keys) : $value;
