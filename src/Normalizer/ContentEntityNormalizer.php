@@ -20,7 +20,8 @@ class ContentEntityNormalizer extends EntityNormalizer {
     $attributes = parent::normalize($object, $format, $context);
 
     // Add the canonical url.
-    if ($object->hasLinkTemplate('canonical')) {
+    $attributes['url'] = '';
+    if ($object->hasLinkTemplate('canonical') && $object->id()) {
       $attributes['url'] = $object->toUrl()->toString();
     }
 
