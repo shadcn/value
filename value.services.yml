@@ -17,6 +17,7 @@ services:
     class: Drupal\value\Normalizer\EntityReferenceFieldItemNormalizer
     tags:
       - { name: normalizer, priority: 11 }
+    arguments: ['@language_manager']
   serializer.value.file_item:
       class: Drupal\value\Normalizer\FileFieldItemNormalizer
       tags:

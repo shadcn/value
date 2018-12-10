@@ -1,0 +1,4 @@
+Value 8.x-1.1, 2018-12-10
+----------------------------------
+- #3017074 by banoodle: Internal error when previewing unsaved node.
+- Fix issue with entity reference translation.
