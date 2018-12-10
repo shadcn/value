@@ -3,7 +3,12 @@
 namespace Drupal\value;
 
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\Core\Language\LanguageInterface;
+use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\Core\Theme\ThemeInitializationInterface;
 use Drupal\Core\Theme\ThemeManager as CoreThemeManager;
+use Drupal\Core\Theme\ThemeNegotiatorInterface;
 
 /**
  * Extends the core ThemeManager.
@@ -14,6 +19,21 @@ class ThemeManager extends CoreThemeManager {
    * The variable prefix for Twig templates.
    */
   public static $PREFIX = '_';
+
+  /**
+   * The language manager.
+   *
+   * @var \Drupal\Core\Language\LanguageManagerInterface
+   */
+  protected $languageManager;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct($root, ThemeNegotiatorInterface $theme_negotiator, ThemeInitializationInterface $theme_initialization, ModuleHandlerInterface $module_handler, LanguageManagerInterface $language_manager) {
+    parent::__construct($root, $theme_negotiator, $theme_initialization, $module_handler);
+    $this->languageManager = $language_manager;
+  }
 
   /**
    * {@inheritdoc}
@@ -74,7 +94,16 @@ class ThemeManager extends CoreThemeManager {
       }
 
       // We want ContentEntity only for now.
-      return ($entity instanceof ContentEntityInterface) ? $entity : NULL;
+      if ($entity instanceof ContentEntityInterface) {
+        // Check for entity translation.
+        /** @var ContentEntityInterface $entity */
+        $langcode = $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId();
+        if ($entity->hasTranslation($langcode)) {
+          return $entity->getTranslation($langcode);
+        }
+
+        return $entity;
+      }
     }
 
     return NULL;
