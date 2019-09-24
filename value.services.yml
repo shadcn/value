@@ -30,6 +30,6 @@ services:
   # Twig filters.
   value.twig_extension:
     class: Drupal\value\Twig\TwigExtension
-    arguments: ['@entity_type.manager', '@module_handler']
+    arguments: ['@entity_type.manager', '@module_handler', '@serializer']
     tags:
       - { name: twig.extension }

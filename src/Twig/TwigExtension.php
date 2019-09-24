@@ -4,6 +4,7 @@ namespace Drupal\value\Twig;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class TwigExtension extends \Twig_Extension {
 
@@ -18,14 +19,21 @@ class TwigExtension extends \Twig_Extension {
   protected $moduleHandler;
 
   /**
+   * @var \Symfony\Component\Serializer\SerializerInterface
+   */
+  protected $serializer;
+
+  /**
    * TwigExtension constructor.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
+   * @param \Symfony\Component\Serializer\SerializerInterface $serializer
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, ModuleHandlerInterface $module_handler) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, ModuleHandlerInterface $module_handler, SerializerInterface $serializer) {
     $this->entityTypeManager = $entity_type_manager;
     $this->moduleHandler = $module_handler;
+    $this->serializer = $serializer;
   }
 
   /**
@@ -57,6 +65,15 @@ class TwigExtension extends \Twig_Extension {
     }
 
     return $filters;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getFunctions() {
+    return [
+      new \Twig_SimpleFunction('value', [$this, 'value']),
+    ];
   }
 
   /**
@@ -140,12 +157,37 @@ class TwigExtension extends \Twig_Extension {
    *   The URL of the image with the style or NULL if not found.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public function imageStyle($uri, $image_style) {
     $storage = $this->entityTypeManager->getStorage('image_style');
     /** @var \Drupal\image\ImageStyleInterface $style */
     if ($style = $storage->load($image_style)) {
       return $style->buildUrl($uri);
+    }
+
+    return NULL;
+  }
+
+  /**
+   * @param array $field
+   *   An entity reference field array with target_id and target_type.
+   *
+   * @return array|null
+   *   The normalized entity array or null.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   */
+  public function value(array $field) {
+    // Check for target_id and target_type.
+    if (empty($field['target_id']) || empty($field['target_type'])) {
+      // TODO: Throw exception?
+      trigger_error('Missing target_id or target_type values.');
+    }
+
+    if ($entity = $this->entityTypeManager->getStorage($field['target_type'])->load($field['target_id'])) {
+      return $this->serializer->normalize($entity, 'value');
     }
 
     return NULL;
