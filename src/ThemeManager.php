@@ -53,7 +53,10 @@ class ThemeManager extends CoreThemeManager {
    */
   protected function buildValues($hook, $variables) {
     // We want ContentEntity only for now.
-    if ($entity = $this->getEntity($hook, $variables)) {
+    // Skip media_library for now.
+    // TODO: Figure out why this is returning a InvalidArgumentException.
+    // @see https://www.drupal.org/project/drupal/issues/3074777
+    if ((isset($variables['#view_mode']) && $variables['#view_mode'] !== 'media_library') && $entity = $this->getEntity($hook, $variables)) {
       $variables['#_value'][static::$PREFIX . $entity->bundle()] = \Drupal::service('serializer')
         ->normalize($entity, 'value');
     }
