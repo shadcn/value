@@ -1,3 +1,9 @@
+Value 8.x-2.0, 2020-01-29
+----------------------------------
+- Fix InvalidArgumentException with media library
+- Issue #3016319 by chipway, riddhi.addweb: Must add prefix to dependencies
+- Add a value Twig function for entity references
+
 Value 8.x-1.1, 2018-12-10
 ----------------------------------
 - #3017074 by banoodle: Internal error when previewing unsaved node.
